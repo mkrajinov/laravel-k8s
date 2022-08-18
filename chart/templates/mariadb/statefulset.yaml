@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mariadb
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "laravel.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ .Release.Name }}-mariadb-service
+  replicas: {{ .Values.mariadb.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mariadb
+      app.kubernetes.io/name: mariadb
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/instance: mariadb
+        app.kubernetes.io/name: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: {{ .Values.mariadb.image }}
+          imagePullPolicy: {{ .Values.mariadb.imagePullPolicy }}
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-mariadb-secret
+                  key: MARIADB_ROOT_PASSWORD
+            - name: MARIADB_USER
+              value: {{ .Values.database.username }}
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "laravel.fullname" . }}-app-secret
+                  key: DB_PASSWORD
+            - name: MARIADB_DATABASE
+              value: {{ .Values.database.name }}
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-mariadb-pvc

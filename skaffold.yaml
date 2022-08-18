@@ -1,0 +1,24 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+build:
+  artifacts:
+    - image: laravel
+      context: laravel
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: laravel
+        namespace: playground
+        skipBuildDependencies: true
+        chartPath: ./chart
+        artifactOverrides:
+          image: laravel
+        valuesFiles:
+          - laravel/k8s/values.yaml
+portForward:
+  - resourceType: service
+    resourceName: laravel-service
+    port: 80
+    localPort: 8888
