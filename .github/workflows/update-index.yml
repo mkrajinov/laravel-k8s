@@ -1,0 +1,26 @@
+name: Update Index
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - name: Helm Installation
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.9.0
+      - name: Update Index
+        run: |
+          helm package ./chart
+          helm repo index .
+          git config --global user.email "bot@mkrajinov.me"
+          git config --global user.name "Bot"
+          git add *.tgz
+          git add index.yaml
+          git commit -m "Update chart index"
+          git push
