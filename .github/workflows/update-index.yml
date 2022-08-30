@@ -17,7 +17,7 @@ jobs:
       - name: Update Index
         run: |
           helm package ./chart
-          helm repo index .
+          helm repo index . --url https://mkrajinov.github.io/laravel-k8s/ --merge ./index.yaml
           git config --global user.email "bot@mkrajinov.me"
           git config --global user.name "Bot"
           git add *.tgz

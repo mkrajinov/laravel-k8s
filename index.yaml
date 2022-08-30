@@ -3,12 +3,12 @@ entries:
   laravel:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-30T20:07:19.2137259Z"
+    created: "2022-08-30T22:59:05.634991+02:00"
     description: A Helm chart for Kubernetes
     digest: 2f37e7fed70f36077bb9312b254bd37f016453d8a68508b593a7f3842918f2f8
     name: laravel
     type: application
     urls:
-    - laravel-0.1.0.tgz
+    - https://mkrajinov.github.io/laravel-k8s/laravel-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-30T20:07:19.212011466Z"
+generated: "2022-08-30T22:59:05.634085+02:00"
