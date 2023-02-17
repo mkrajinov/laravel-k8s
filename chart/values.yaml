@@ -4,7 +4,7 @@
 
 replicaCount: 1
 
-image: php-fpm:latest
+image: laravel
 imagePullPolicy: Always
 
 imagePullSecrets: []
@@ -85,6 +85,9 @@ database:
   name: laravel
   username: laravel
   password: password
+
+queueWorker:
+  replicaCount: 1
 
 aws:
   accessKey: "acces-key"

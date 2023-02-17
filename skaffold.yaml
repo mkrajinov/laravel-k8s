@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta29
+apiVersion: skaffold/v4beta2
 kind: Config
 build:
   artifacts:
@@ -6,17 +6,19 @@ build:
       context: laravel
       docker:
         dockerfile: Dockerfile
-deploy:
+manifests:
   helm:
     releases:
       - name: laravel
-        namespace: playground
-        skipBuildDependencies: true
         chartPath: ./chart
-        artifactOverrides:
-          image: laravel
-        valuesFiles:
-          - laravel/k8s/values.yaml
+#        valuesFiles:
+#          - laravel/k8s/values.yaml
+        setValueTemplates:
+          image: '{{.IMAGE_FULLY_QUALIFIED_laravel}}'
+          imagePullPolicy: '{{.IMAGE_PULL_POLICY_laravel}}'
+        skipBuildDependencies: true
+deploy:
+  helm: {}
 portForward:
   - resourceType: service
     resourceName: laravel-service
