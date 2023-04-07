@@ -227,3 +227,6 @@ redis:
     size: 1Gi
     accessModes:
       - ReadWriteOnce
+  nodeSelector: { }
+  affinity: { }
+  tolerations: [ ]
