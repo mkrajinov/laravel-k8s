@@ -17,9 +17,7 @@ serviceAccount:
   name: ""
 
 podAnnotations: { }
-
 podSecurityContext: { }
-
 securityContext: { }
 
 service:
@@ -46,9 +44,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 
 nodeSelector: { }
-
 tolerations: [ ]
-
 affinity: { }
 
 database:
@@ -56,10 +52,6 @@ database:
 
 queueWorker:
   replicaCount: 1
-
-aws:
-  accessKey: "acces-key"
-  secretKey: "secret-key"
 
 env:
   APP_NAME: Laravel
