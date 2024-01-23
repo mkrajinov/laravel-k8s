@@ -2,8 +2,28 @@ apiVersion: v1
 entries:
   laravel:
   - apiVersion: v2
+    appVersion: 10.41.0
+    created: "2024-01-23T01:55:36.013559874Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 13.4.0
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 18.8.0
+    description: A Helm chart for Laravel applications with PHP-FPM, Nginx, MariaDB/PostgreSQL,
+      Redis
+    digest: 0621e128272a62738db8d72f43e75cafe7cd2dfec383d7826b5b25cb579713c0
+    name: laravel
+    type: application
+    urls:
+    - https://mkrajinov.github.io/laravel-k8s/laravel-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 10.0.0
-    created: "2023-04-07T00:45:35.182750057Z"
+    created: "2024-01-23T01:55:36.003380501Z"
     description: A Helm chart for Kubernetes
     digest: 411ee2d25e8206fdfcac5697dcf8f10f30235f1cbd01e41e443dff257c753400
     name: laravel
@@ -13,7 +33,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.3
-    created: "2023-04-07T00:45:35.181872048Z"
+    created: "2024-01-23T01:55:36.002735953Z"
     description: A Helm chart for Kubernetes
     digest: 33a87fd646cfcb88083cb61b4ae98631a3c363bce14c5e433a8b0d1fa4de959d
     name: laravel
@@ -23,7 +43,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-04-07T00:45:35.181016339Z"
+    created: "2024-01-23T01:55:36.002022285Z"
     description: A Helm chart for Kubernetes
     digest: 676b76571559932c05a1224a5e1cfd40d104b9b434e99644d195232722d349ac
     name: laravel
@@ -31,4 +51,4 @@ entries:
     urls:
     - https://mkrajinov.github.io/laravel-k8s/laravel-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-07T00:45:35.179799426Z"
+generated: "2024-01-23T01:55:36.00120342Z"
