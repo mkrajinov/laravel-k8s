@@ -11,11 +11,11 @@ manifests:
     releases:
       - name: laravel
         chartPath: ./chart
-#        valuesFiles:
-#          - laravel/k8s/values.yaml
         setValueTemplates:
           image: '{{.IMAGE_FULLY_QUALIFIED_laravel}}'
           imagePullPolicy: '{{.IMAGE_PULL_POLICY_laravel}}'
+          env:
+            APP_KEY: base64:scHwFv2TLZkl9n5YCFGTNUg/oUCnGCc69uiOUBWZl/U=
         skipBuildDependencies: true
 deploy:
   helm: {}
@@ -23,4 +23,4 @@ portForward:
   - resourceType: service
     resourceName: laravel-service
     port: 80
-    localPort: 8888
+    localPort: 8080
