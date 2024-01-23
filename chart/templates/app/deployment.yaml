@@ -32,19 +32,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: nginx
-          image: {{ .Values.nginx.image }}
-          imagePullPolicy: {{ .Values.nginx.imagePullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /srv/app/public/
-              name: public
-            - mountPath: /etc/nginx/conf.d/default.conf
-              name: nginx-conf
-              subPath: default.conf
         - name: app
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -68,32 +55,40 @@ spec:
             - name: DB_CONNECTION
               value: {{ .Values.database.connection }}
             - name: DB_HOST
-              value: {{ .Release.Name }}-mariadb-service
+              value: {{ .Release.Name }}-postgresql
             - name: DB_PORT
-              value: "{{ .Values.database.port }}"
+              value: {{ .Values.postgresql.primary.service.ports.postgresql | quote }}
             - name: DB_DATABASE
-              value: {{ .Values.database.name }}
+              value: {{ .Values.postgresql.auth.database }}
             - name: DB_USERNAME
-              value: {{ .Values.database.username }}
+              value: {{ .Values.postgresql.auth.username }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "laravel.fullname" . }}-app-secret
-                  key: DB_PASSWORD
+                  name: {{ include "laravel.fullname" . }}-postgresql
+                  key: password
             - name: REDIS_HOST
-              value: {{ .Release.Name }}-redis-service
+              value: {{ .Release.Name }}-redis-master
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "laravel.fullname" . }}-redis
+                  key: redis-password
             - name: REDIS_PORT
-              value: "{{ .Values.redis.service.port }}"
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "laravel.fullname" . }}-app-secret
-                  key: AWS_ACCESS_KEY_ID
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "laravel.fullname" . }}-app-secret
-                  key: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.redis.master.service.ports.redis | quote }}
+        - name: nginx
+          image: {{ .Values.nginx.image }}
+          imagePullPolicy: {{ .Values.nginx.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /srv/app/public/
+              name: public
+            - mountPath: /etc/nginx/conf.d/default.conf
+              name: nginx-conf
+              subPath: default.conf
       initContainers:
         - name: init-public
           image: {{ .Values.image }}
